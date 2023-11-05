@@ -1,0 +1,87 @@
+create table new_roll(roll int,name varchar(10));
+
+ create table old_roll(roll int,name varchar(10));
+
+ insert into new_roll values(2,'b')
+
+ insert into old_roll values(4,'d');
+
+ insert into old_roll values(3,'bcd');
+
+ insert into old_roll values(1,'bc');
+
+ insert into old_roll values(5,'bch');
+
+ insert into new_roll values(5,'bch');
+
+ insert into new_roll values(1,'bc');
+
+ select * from new_roll;
+ ROLL NAME
+---------- ----------
+ 2 b
+ 5 bch
+ 1 bc
+SQL> select * from old_roll;
+ ROLL NAME
+---------- ----------
+ 4 d
+ 3 bcd
+ 1 bc
+ 5 bch
+
+
+
+
+pl sql
+
+
+
+
+
+call roll1_list();
+
+ select * from new_roll;
+ ROLL NAME
+---------- ----------
+ 2 b
+ 5 bch
+ 1 bc
+ 4 d
+ 3 bcd
+
+
+
+
+PL SQL CODE=
+CREATE OR REPLACE PROCEDURE roll1_list AS
+  a INT;
+  a1 VARCHAR2(10);
+  b INT;
+  b1 VARCHAR2(10);
+  CURSOR c1 IS SELECT roll, name FROM old_roll;
+  CURSOR c2 IS SELECT roll, name FROM new_roll;
+  BEGIN
+  OPEN c1;
+  OPEN c2;
+
+  LOOP
+  FETCH c1 INTO a, a1;
+  EXIT WHEN c1%NOTFOUND;
+
+  BEGIN
+  SELECT roll INTO b FROM new_roll WHERE roll = a;
+  EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+ 
+  INSERT INTO new_roll (roll, name) VALUES (a, a1);
+  END;
+  END LOOP;
+
+  CLOSE c1;
+  CLOSE c2;
+
+
+  COMMIT;
+  END;
+  /
