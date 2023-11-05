@@ -1,0 +1,55 @@
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    e_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(50),
+    location varchar(50));
+
+
+
+
+
+
+
+INSERT INTO employee VALUES(1, 'John Doe', 50000.00, '2022-01-15', 101, 'Manager','mumbai'),
+    (2, 'Jane Smith', 45000.00, '2022-02-20', 102, 'Supervisor','kolkata'),
+    (3, 'Alice Johnson', 60000.00, '2022-03-10', 101, 'Manager','mumbai'),
+    (4, 'Bob Williams', 42000.00, '2022-04-05', 103, 'Employee','nagpur'),
+    (5, 'Eve Davis', 55000.00, '2022-05-15', 102, 'Supervisor','pune'),
+    (6, 'Mike Brown', 48000.00, '2022-06-20', 103, 'Employee','mumbai'),
+    (7, 'Laura Lee', 70000.00, '2022-07-10', 101, 'Manager','nagpur'),
+    (8, 'Chris Evans', 40000.00, '2022-08-05', 102, 'Supervisor','sangli'),
+    (9, 'Sophia Hall', 52000.00, '2022-09-15', 103, 'Employee','miraj'),
+    (10, 'David Clark', 45000.00, '2022-10-20', 101, 'Manager','satara');
+
+
+
+
+
+
+SELECT * FROM employee WHERE e_name LIKE '%e%';
+
+
+
+SELECT DISTINCT Designation FROM employee;
+
+
+SELECT e_name, salary FROM employee WHERE location = 'Mumbai';
+
+SELECT e_name, Dept_no
+FROM employee
+WHERE Designation IN ('Manager', 'Marketing');
+
+
+SELECT Dept_no
+FROM employee
+GROUP BY Dept_no
+HAVING COUNT(*) > 1;
+
+
+ALTER TABLE employee RENAME TO emp1;
+
+
+ALTER TABLE emp1 ADD COLUMN city VARCHAR(255);
