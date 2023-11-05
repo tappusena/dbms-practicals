@@ -1,0 +1,73 @@
+-- Create the tables
+CREATE TABLE employee (
+    employee_name VARCHAR(255),
+    street VARCHAR(255),
+    city VARCHAR(255)
+);
+
+CREATE TABLE works (
+    employee_name VARCHAR(255),
+    company_name VARCHAR(255),
+    salary DECIMAL(10, 2)
+);
+
+CREATE TABLE company (
+    company_name VARCHAR(255),
+    city VARCHAR(255)
+);
+
+CREATE TABLE manages (
+    employee_name VARCHAR(255),
+    manager_name VARCHAR(255)
+);
+
+-- Insert values into the tables
+-- Note: You can replace these values with your own data as needed.
+
+-- Insert values into the employee table
+INSERT INTO employee (employee_name, street, city) VALUES
+    ('Employee1', 'Street1', 'City1'),
+    ('Employee2', 'Street2', 'City2'),
+    ('Employee3', 'Street3', 'City1'),
+    ('Employee4', 'Street4', 'City3');
+
+-- Insert values into the works table
+INSERT INTO works (employee_name, company_name, salary) VALUES
+    ('Employee1', 'Company1', 12000.00),
+    ('Employee2', 'Company2', 9000.00),
+    ('Employee3', 'Company1', 11000.00),
+    ('Employee4', 'Company3', 13000.00);
+
+-- Insert values into the company table
+INSERT INTO company (company_name, city) VALUES
+    ('Company1', 'City1'),
+    ('Company2', 'City2'),
+    ('Company3', 'City3');
+
+-- Insert values into the manages table (you can add manager relationships if needed)
+INSERT INTO manages (employee_name, manager_name) VALUES
+    ('Employee1', 'Manager1'),
+    ('Employee2', 'Manager2'),
+    ('Employee3', 'Manager1'),
+    ('Employee4', 'Manager3');
+
+
+
+
+
+
+SELECT company_name
+FROM works
+GROUP BY company_name
+HAVING SUM(salary) = (
+    SELECT MIN(total_salary)
+    FROM (SELECT company_name, SUM(salary) AS total_salary FROM works GROUP BY company_name) AS subquery
+);
+
+
+SELECT e.employee_name
+FROM employee e
+INNER JOIN manages m ON e.employee_name = m.employee_name
+INNER JOIN employee m2 ON m.manager_name = m2.employee_name
+WHERE e.city = m2.city AND e.street = m2.street;
+
