@@ -1,0 +1,38 @@
+DDL
+
+CREATE TABLE student (
+    roll_no INT PRIMARY KEY,
+    name VARCHAR(50),
+    marks INT,
+    class VARCHAR(10)
+);
+
+ALTER TABLE student
+ADD COLUMN age INT;
+
+
+ALTER TABLE student
+RENAME COLUMN class TO grade;
+
+
+DML
+
+-- Insert a single record
+INSERT INTO student (roll_no, name, marks, grade, age)
+VALUES (1, 'John Doe', 95, '10A', 16);
+
+-- Insert multiple records
+INSERT INTO student (roll_no, name, marks, grade, age)
+VALUES
+    (2, 'Jane Smith', 88, '9B', 15),
+    (3, 'Alice Johnson', 92, '11C', 17);
+'
+
+
+UPDATE student
+SET marks = 90
+WHERE roll_no = 2;
+
+
+DELETE FROM student
+WHERE roll_no = 3;
