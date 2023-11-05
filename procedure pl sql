@@ -1,0 +1,64 @@
+ create table student_marks(name varchar(70),total_marks number);
+
+
+
+ insert into student_marks values('tushar',990);
+
+
+
+ insert into student_marks values('bk',880);
+
+ 
+
+ insert into student_marks values('b',440);
+
+
+
+
+
+ exec marksproc;
+Destinction
+
+
+
+SQL> @procedure;
+Enter value for name: 'bk'
+old   3: stud_name student_marks.name%type:=&name;
+new   3: stud_name student_marks.name%type:='bk';
+
+Procedure created.
+
+SQL> exec marksproc;
+Higher Second  Class
+
+PL/SQL procedure successfully completed.
+
+
+
+PLSQL CODE=
+create or replace procedure marksproc as
+marks student_marks.total_marks%type;
+stud_name student_marks.name%type:=&name;
+
+BEGIN
+select total_marks into marks from student_marks where stud_name=name;
+
+IF marks<=1500 AND marks>=990
+THEN
+dbms_output.put_line('Destinction');
+
+ELSIF marks<989 AND marks>900
+THEN
+dbms_output.put_line(' First Class');
+
+ELSIF marks<=899 AND marks>=825
+THEN
+dbms_output.put_line(' Higher Second  Class');
+
+ELSE
+dbms_output.put_line(' failed');
+
+END IF;
+
+end;
+/
