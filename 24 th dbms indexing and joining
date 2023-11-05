@@ -1,0 +1,83 @@
+ 
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    e_name VARCHAR(255),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(255)
+);
+
+
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    pincode VARCHAR(10)
+);
+
+
+CREATE TABLE order1 (
+    order_id INT PRIMARY KEY,
+    date DATE,
+    amount DECIMAL(10, 2),
+    cust_id INT,
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
+);
+
+
+
+INSERT INTO employee (emp_id, e_name, salary, Date_of_Joining, Dept_no, Designation)
+VALUES
+    (1, 'John Doe', 60000, '2022-01-15', 101, 'Manager'),
+    (2, 'Jane Smith', 55000, '2022-02-20', 102, 'Engineer'),
+    (3, 'Alice Johnson', 70000, '2022-03-10', 101, 'Manager');
+
+
+INSERT INTO Customer (c_id, c_name, email, city, pincode)
+VALUES
+    (1, 'Customer A', 'customer_a@example.com', 'New York', '10001'),
+    (2, 'Customer B', 'customer_b@example.com', 'Los Angeles', '90001'),
+    (3, 'Customer C', 'customer_c@example.com', 'Chicago', '60601');
+
+
+INSERT INTO order1 (order_id, date, amount, cust_id)
+VALUES
+    (1, '2022-04-05', 100.00, 1),
+    (2, '2022-04-10', 75.50, 2),
+    (3, '2022-04-15', 120.25, 1);
+
+
+-- Create an index on the salary column
+CREATE INDEX salary_index ON employee (salary);
+
+
+
+-- Create a user-defined index on the Designation column
+CREATE INDEX designation_index ON employee (Designation);
+
+
+
+CREATE SEQUENCE order_id_seq START WITH 1 INCREMENT BY 1;
+
+
+
+-- Truncate the employee table
+TRUNCATE TABLE employee;
+
+
+SELECT c.c_name, o.order_id, o.date, o.amount
+FROM Customer c
+JOIN order1 o ON c.c_id = o.cust_id;
+
+
+CREATE VIEW CustomerOrderInfo AS
+SELECT c.c_id, c.c_name, c.email, c.city, c.pincode, o.order_id, o.date, o.amount
+FROM Customer c
+LEFT JOIN order1 o ON c.c_id = o.cust_id;
+ 
+SELECT c.c_id, c.c_name, c.email, c.city, c.pincode
+FROM Customer c
+LEFT JOIN order1 o ON c.c_id = o.cust_id
+WHERE o.cust_id IS NULL;
