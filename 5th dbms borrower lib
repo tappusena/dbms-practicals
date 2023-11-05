@@ -1,0 +1,49 @@
+CREATE TABLE Borrower (
+    RollNo INT PRIMARY KEY,
+    Name VARCHAR(255),
+    DateofIssue DATE,
+    NameofBook VARCHAR(255),
+    Status VARCHAR(10)
+);
+
+CREATE TABLE Fine (
+    Roll_no INT PRIMARY KEY,
+    Date DATE,
+    Amt DECIMAL(10, 2)
+);
+
+
+-- Insert into Borrower table
+INSERT INTO Borrower (RollNo, Name, DateofIssue, NameofBook, Status)
+VALUES
+    (1, 'John', '2023-01-05', 'Book1', 'Issued'),
+    (2, 'Alice', '2023-01-10', 'Book2', 'Issued'),
+    (3, 'Bob', '2023-02-15', 'Book3', 'Returned'),
+    -- Add more records as needed...
+
+-- Insert into Fine table
+INSERT INTO Fine (Roll_no, Date, Amt)
+VALUES
+    (1, '2023-01-15', 5.00),
+    (2, '2023-01-20', 3.00),
+    (3, '2023-02-20', 10.00),
+    -- Add more records as needed...
+
+
+SELECT COUNT(*) AS IssuedBookCount
+FROM Borrower
+WHERE Status = 'Issued';
+
+
+-- Display all records from the Borrower table
+SELECT * FROM Borrower;
+
+-- Display all records from the Fine table
+SELECT * FROM Fine;
+
+
+SELECT RollNo
+FROM Borrower
+GROUP BY RollNo
+HAVING COUNT(DISTINCT DateofIssue) > 1;
+
