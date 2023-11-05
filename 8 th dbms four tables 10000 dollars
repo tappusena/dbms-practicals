@@ -1,0 +1,75 @@
+-- Create the tables
+CREATE TABLE employee (
+    employee_name VARCHAR(255),
+    street VARCHAR(255),
+    city VARCHAR(255)
+);
+
+CREATE TABLE works (
+    employee_name VARCHAR(255),
+    company_name VARCHAR(255),
+    salary DECIMAL(10, 2)
+);
+
+CREATE TABLE company (
+    company_name VARCHAR(255),
+    city VARCHAR(255)
+);
+
+CREATE TABLE manages (
+    employee_name VARCHAR(255),
+    manager_name VARCHAR(255)
+);
+
+-- Insert values into the tables
+-- Note: You can replace these values with your own data as needed.
+
+-- Insert values into the employee table
+INSERT INTO employee (employee_name, street, city) VALUES
+    ('Employee1', 'Street1', 'City1'),
+    ('Employee2', 'Street2', 'City2'),
+    ('Employee3', 'Street3', 'City1'),
+    ('Employee4', 'Street4', 'City3');
+
+-- Insert values into the works table
+INSERT INTO works (employee_name, company_name, salary) VALUES
+    ('Employee1', 'Company1', 12000.00),
+    ('Employee2', 'Company2', 9000.00),
+    ('Employee3', 'Company1', 11000.00),
+    ('Employee4', 'Company3', 13000.00);
+
+-- Insert values into the company table
+INSERT INTO company (company_name, city) VALUES
+    ('Company1', 'City1'),
+    ('Company2', 'City2'),
+    ('Company3', 'City3');
+
+-- Insert values into the manages table (you can add manager relationships if needed)
+INSERT INTO manages (employee_name, manager_name) VALUES
+    ('Employee1', 'Manager1'),
+    ('Employee2', 'Manager2'),
+    ('Employee3', 'Manager1'),
+    ('Employee4', 'Manager3');
+
+
+
+
+SELECT e.employee_name, e.street, e.city
+FROM employee e
+INNER JOIN works w1 ON e.employee_name = w1.employee_name
+INNER JOIN works w2 ON w1.company_name = w2.company_name
+WHERE w1.salary > 10000 AND w2.salary > 10000;
+
+
+
+SELECT DISTINCT e.employee_name
+FROM employee e
+INNER JOIN works w ON e.employee_name = w.employee_name
+INNER JOIN company c ON w.company_name = c.company_name
+WHERE e.city = c.city;
+
+
+SELECT e.employee_name
+FROM employee e
+INNER JOIN works w ON e.employee_name = w.employee_name
+WHERE w.salary > (SELECT AVG(salary) FROM works WHERE company_name = w.company_name);
