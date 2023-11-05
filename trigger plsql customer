@@ -1,0 +1,43 @@
+19)Write a database trigger on customer( cust_id, c_name, addr) table. The System should keep track of the records that are being updated or deleted. The old value of updated or deleted records should be added in cust_Audit table.
+
+CREATE TABLE customer2 (
+    cust_id NUMBER PRIMARY KEY,
+    c_name VARCHAR2(50),
+    addr VARCHAR2(100)
+);
+
+CREATE TABLE cust_Audit2 (
+    cust_id NUMBER,
+    c_name VARCHAR2(50),
+    addr VARCHAR2(100)
+);
+INSERT INTO customer2 (cust_id, c_name, addr) VALUES (1, 'John Doe', '123 Main St');
+INSERT INTO customer2 (cust_id, c_name, addr) VALUES (2, 'Alice Smith', '456 Elm St');
+INSERT INTO customer2 (cust_id, c_name, addr) VALUES (3, 'Bob Johnson', '789 Oak St');
+
+CREATE OR REPLACE TRIGGER customer2_audit_trigger
+BEFORE DELETE OR UPDATE ON customer2
+FOR EACH ROW
+BEGIN
+    IF UPDATING THEN
+        -- Store the old values in cust_Audit2 before updating
+        INSERT INTO cust_Audit2 (cust_id, c_name, addr)
+        VALUES (:OLD.cust_id, :OLD.c_name, :OLD.addr);
+    ELSIF DELETING THEN
+        -- Store the old values in cust_Audit2 before deleting
+        INSERT INTO cust_Audit2 (cust_id, c_name, addr)
+        VALUES (:OLD.cust_id, :OLD.c_name, :OLD.addr);
+    END IF;
+END;
+/
+
+UPDATE customer2
+SET addr = '456 New Address'
+WHERE cust_id = 1;
+
+DELETE FROM customer2
+WHERE cust_id = 2;
+
+select * from customer2;
+
+select * from cust_Audit2;
