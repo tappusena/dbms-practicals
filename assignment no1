@@ -1,0 +1,35 @@
+CREATE TABLE employee (
+    emp_id INT PRIMARY KEY,
+    e_name VARCHAR(50),
+    salary DECIMAL(10, 2),
+    Date_of_Joining DATE,
+    Dept_no INT,
+    Designation VARCHAR(50)
+);
+
+INSERT INTO employee VALUES(1, 'John Doe', 50000.00, '2022-01-15', 101, 'Manager'),
+    (2, 'Jane Smith', 45000.00, '2022-02-20', 102, 'Supervisor'),
+    (3, 'Alice Johnson', 60000.00, '2022-03-10', 101, 'Manager'),
+    (4, 'Bob Williams', 42000.00, '2022-04-05', 103, 'Employee'),
+    (5, 'Eve Davis', 55000.00, '2022-05-15', 102, 'Supervisor'),
+    (6, 'Mike Brown', 48000.00, '2022-06-20', 103, 'Employee'),
+    (7, 'Laura Lee', 70000.00, '2022-07-10', 101, 'Manager'),
+    (8, 'Chris Evans', 40000.00, '2022-08-05', 102, 'Supervisor'),
+    (9, 'Sophia Hall', 52000.00, '2022-09-15', 103, 'Employee'),
+    (10, 'David Clark', 45000.00, '2022-10-20', 101, 'Manager');
+
+CREATE VIEW emp_vl AS
+SELECT emp_id, e_name, Dept_no
+FROM employee;
+
+UPDATE employee
+SET Dept_no = 104
+WHERE emp_id = 1;
+
+
+SHOW INDEX FROM employee;
+
+
+CREATE INDEX idx_salary ON employee (salary);
+
+
