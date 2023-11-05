@@ -1,0 +1,61 @@
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    pincode VARCHAR(10)
+);
+
+CREATE TABLE Order (
+    order_id INT PRIMARY KEY,
+    date DATE,
+    amount DECIMAL(10, 2),
+    cust_id INT,
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
+);
+
+
+
+-- Insert records into the Customer table
+INSERT INTO Customer (c_id, c_name, email, city, pincode)
+VALUES
+    (1, 'Customer 1', 'customer1@email.com', 'City 1', '12345'),
+    (2, 'Customer 2', 'customer2@email.com', 'City 2', '67890'),
+    -- Add more records for a total of 10.
+
+-- Insert records into the Order table
+INSERT INTO Order (order_id, date, amount, cust_id)
+VALUES
+    (1, '2023-01-01', 100.00, 1),
+    (2, '2023-01-02', 200.00, 1),
+    -- Add more records for a total of 10.
+
+
+
+SELECT *
+FROM Order
+WHERE cust_id = 2;
+
+SELECT C.c_id, C.c_name, O.order_id, O.date, O.amount
+FROM Customer C
+INNER JOIN Order O ON C.c_id = O.cust_id;
+
+
+SELECT *
+FROM Customer
+WHERE c_id NOT IN (SELECT DISTINCT cust_id FROM Order);
+
+SELECT c1.c_name AS customer1, c2.c_name AS customer2
+FROM Customer c1, Customer c2
+WHERE c1.city = c2.city AND c1.c_id < c2.c_id;
+
+SELECT * FROM Customer;
+SELECT * FROM Order;
+
+
+
+SELECT C.*
+FROM Customer C
+WHERE city = 'City8';
+
+
