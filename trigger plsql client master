@@ -1,0 +1,51 @@
+20) Implement a database trigger on client_master( c_id, c_name, acc_no) table. The System should keep track of the records that are being updated or inserted. The old value of updated or deleted records should be added in client_Audit table.
+
+CREATE TABLE client_master (
+    c_id NUMBER PRIMARY KEY,
+    c_name VARCHAR2(50),
+    acc_no NUMBER
+);
+
+CREATE TABLE client_Audit (
+    c_id NUMBER,
+    c_name VARCHAR2(50),
+    acc_no NUMBER
+);
+
+CREATE OR REPLACE TRIGGER client_master_audit_trigger
+AFTER INSERT OR UPDATE OR DELETE ON client_master
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        -- Store the inserted values in client_Audit
+        INSERT INTO client_Audit (c_id, c_name, acc_no)
+        VALUES (:NEW.c_id, :NEW.c_name, :NEW.acc_no);
+    ELSIF UPDATING THEN
+        -- Store the old values in client_Audit before updating
+        INSERT INTO client_Audit (c_id, c_name, acc_no)
+        VALUES (:OLD.c_id, :OLD.c_name, :OLD.acc_no);
+    ELSIF DELETING THEN
+        -- Store the old values in client_Audit before deleting
+        INSERT INTO client_Audit (c_id, c_name, acc_no)
+        VALUES (:OLD.c_id, :OLD.c_name, :OLD.acc_no);
+    END IF;
+END;
+/
+
+INSERT INTO client_master (c_id, c_name, acc_no)
+VALUES (1, 'John Doe', 12345);
+
+-- Insert another client
+INSERT INTO client_master (c_id, c_name, acc_no)
+VALUES (2, 'Alice Smith', 67890);
+
+UPDATE client_master
+SET acc_no = 54321
+WHERE c_id = 1;
+
+DELETE FROM client_master
+WHERE c_id = 2;
+
+select * from client_master;
+
+select * from client_Audit;
